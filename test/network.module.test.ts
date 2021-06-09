@@ -22,7 +22,7 @@ _chai.expect
             expect(nodeProperty["specName"]).to.be.equal(localVersion["specName"]);
             expect(nodeProperty["specVersion"]).to.be.equal(localVersion["specVersion"]);
 
-        }).catch((error)=>console.log(error));
+        }).catch(console.error);
         await this.api.disconnect();
     }
 }
