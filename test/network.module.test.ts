@@ -19,7 +19,7 @@ _chai.expect
         let checkEvent = this.api.query.system.lastRuntimeUpgrade().then(function (response){
             var nodeProperty = JSON.parse(JSON.stringify(response));
 
-            expect(nodeProperty["specName"]).to.be.equal(localVersion["specName"]);
+            expect(nodeProperty["specName"]).to.be.equal(localVersion["specName"]); // проверил потому что вдруг по каким-либо причинам серевер ответит инфой о другом рантайме и это неправильно будет
             expect(nodeProperty["specVersion"]).to.be.equal(localVersion["specVersion"]);
 
         }).catch(console.error);
