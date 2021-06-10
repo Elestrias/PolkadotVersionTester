@@ -24,6 +24,8 @@ _chai.expect;
         await this.api.isReady.then(()=>console.log("-Done"));
         let x = this.api.query.system.lastRuntimeUpgrade().then(function(response) {
             var property = JSON.parse(JSON.stringify(response));
+            assert(localVersion["specVersion"] != undefined, "local.property should contain specVersion field");
+            assert(property["specVersion"] != undefined, "server response should contain specVersion field");
             assert(property["specVersion"] === localVersion["specVersion"], "Runtime version: " + property["specVersion"]+ " should be equal to local version: " + localVersion["specVersion"]);
         });
         console.log("Waiting for a server response");
