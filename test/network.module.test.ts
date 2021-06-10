@@ -7,14 +7,25 @@ import * as fs from  'fs'
 
 @suite class runTimeVersionCheck{
     private api: ApiPromise;
-    private wsProvider = new WsProvider('wss://rpc.polkadot.io');
+    private wsProvider = new WsProvider('wss://rpc.polkadot.io', 0);
 
 
-    async after(){
-       console.log("Waiting for an api disconnection");
-       process.exit();
+    async after() {
+        if(this.wsProvider.isConnected) {
+            if (this.api) {
+                console.log("Waiting for an api disconnection");
+                await this.api.disconnect().then(()=>console.log("-Done"));
+            }
+            delete this.api;
+            console.log("Waiting for a web-socket provider disconnection");
+            await this.wsProvider.disconnect().then(()=>console.log("-Done"));
+        }else{
+            assert.fail("Connection Error");
+        }
+        delete this.wsProvider;
     }
     @test async "Test1"(){
+        await this.wsProvider.connect();
         this.api =  new ApiPromise({provider: this.wsProvider});
         var local  = fs.readFileSync("./test/local.property.json", "utf-8");
         var localVersion = JSON.parse(local);
